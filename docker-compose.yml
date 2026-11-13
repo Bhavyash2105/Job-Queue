@@ -1,0 +1,34 @@
+services:
+  redis:
+    image: redis:7
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      retries: 10
+
+  api:
+    build: .
+    command: uvicorn api:app --host 0.0.0.0 --port 8000
+    environment:
+      REDIS_HOST: redis
+    ports:
+      - "8000:8000"
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  worker:
+    build: .
+    command: python -u worker.py
+    environment:
+      REDIS_HOST: redis
+      VISIBILITY_TIMEOUT: "10"
+    depends_on:
+      redis:
+        condition: service_healthy
+
+volumes:
+  redis-data:
