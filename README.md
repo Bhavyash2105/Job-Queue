@@ -4,13 +4,6 @@
 
 A distributed background job queue built with **Python, FastAPI and Redis**. Jobs survive worker crashes, failed jobs retry with exponential backoff, and jobs that keep failing land in a dead-letter queue instead of disappearing.
 
-## Demo: killing a worker mid-job
-
-<!-- Drag demo.mp4 into the GitHub README editor and paste the generated link here, or link an unlisted YouTube video -->
-**[Watch the crash-recovery demo](<paste-video-link-here>)**
-
-A worker picks up a job and dies halfway through. After its lease expires, another worker's reaper reclaims the job, it retries, and it finishes. No job is lost.
-
 ## Features
 
 - **At-least-once delivery.** A job is moved atomically from `pending` to `processing`, so it is never in limbo.
