@@ -21,16 +21,13 @@ All state lives in Redis. Workers are stateless, so you scale by running more of
 
 Requires Docker.
 
-bash
-docker compose up -d --build --scale worker=3
+docker 
+compose up -d --build --scale worker=3
 
 The API is now at http://localhost:8000 (interactive docs at /docs).
 
 powershell
-# submit a job
 Invoke-RestMethod -Method Post -Uri http://localhost:8000/jobs -ContentType "application/json" -Body '{"type":"sleep","payload":{"seconds":2}}'
-
-# check queue sizes
 Invoke-RestMethod http://localhost:8000/stats
 
 <h2>API</h2>
